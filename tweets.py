@@ -10,7 +10,6 @@ access_token_secret ="yrsIDmB70FsvHx9NTA6IuSRdi8yB07Yq1EOVY8ixktusl"
 tracking_list = ["btc", "xbt", "ETH", "crypto", "cryptocurrency", "ETHER", "ETHEREUM"]
 
 
-
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
@@ -19,15 +18,17 @@ api = tweepy.API(auth)
 class MyStreamListener(tweepy.StreamListener):
     #status.user.screen_name
     def on_status(self, status):
-        print(status.text)
-    
+        parse_tweet(status)
+
     def on_error(self, status):
         print(status)
 
         
 # The v2 rules would omit having to parse the data yourself but its not available with tweepy yet.
-def parse_tweet(tweet):
-    pass
+def parse_tweet(status):
+    res = any(ele in status.text for ele in tracking_list)
+    if res:
+        print(status.text)
     
 
 
@@ -43,4 +44,4 @@ myStream = tweepy.Stream(auth = api.auth, listener= myStreamListener)
 # DeItaone - 2704294333
 # ["2343911084", "2704294333", "968796006576947200"]
 
-myStream.filter(follow=["968796006576947200"])
+myStream.filter(follow=["968796006576947200", "2704294333"])
