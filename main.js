@@ -1,6 +1,22 @@
 const {Client} = require('discord.js');
+const {spawn} = require('child_process');
+
+const tweepy = spawn('python3', ["python_scripts/tweets.py"], {stdio:['ipc', 'pipe', 'pipe']})
 
 const client = new Client();
+
+
+tweepy.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+})
+
+tweepy.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+})
+
+tweepy.on('exit', (code, error) => {
+    console.log(`tweepy proccess exited with code ${code}`);
+})
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
