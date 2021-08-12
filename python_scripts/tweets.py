@@ -32,12 +32,12 @@ class MyStreamListener(tweepy.StreamListener):
     #status.user.screen_name
     def on_status(self, status):
         parse_tweet(status)
-        sys.stdout.flush()
+        # sys.stdout.flush()
 
     def on_error(self, status):
+        print("Error")
         print(status)
-        sys.stdout.flush()
-
+       # sys.out.flush()
         
 #The v2 rules would omit having to parse the data yourself but its not available with tweepy yet.
 def parse_tweet(status):
@@ -49,7 +49,8 @@ def parse_tweet(status):
                     binance_listing(status)
                 else:
                     try:
-                        print(status.text.encode('utf-8'))
+
+                        sys.stdout.write(status.text+"\n")
                     except:
                         print("failed!!")
                         print(status)
@@ -59,7 +60,7 @@ def binance_listing(status):
     pass
 
 myStreamListener = MyStreamListener()
-myStream = tweepy.Stream(auth = api.auth, listener= myStreamListener)
+myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
 # for tweet in tweepy.Cursor(api.search, q='tweepy').items(10):
 #     print("-------\n"+tweet.text+"-------\n\n")

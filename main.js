@@ -1,11 +1,11 @@
 const {Client} = require('discord.js');
 const {spawn} = require('child_process');
 
-const tweepy = spawn('python3', ["python_scripts/tweets.py"], {stdio:['ipc', 'pipe', 'pipe']})
+const tweepy = spawn('python3', ["-u", "python_scripts/tweets.py"], {stdio:['ipc', 'pipe', 'pipe']})
 
 const client = new Client();
 
-
+tweepy.stdout.setEncoding('utf-8')
 tweepy.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
 })
