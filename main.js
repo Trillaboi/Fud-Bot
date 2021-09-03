@@ -24,7 +24,7 @@ tweepy.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         }
     }
-    
+
 })
 
 tweepy.stderr.on('data', (data) => {
@@ -45,7 +45,7 @@ client.on('ready', () => {
 //         console.log(message.content);
 //     if (message.content === 'ping') {
 //         message.channel.send('pong');
-//     } 
+//     }
 // });
 
 messageEmitter.on('command', (command) => {
@@ -62,7 +62,7 @@ function messageHandler(command)
     const ftxChannel = client.channels.cache.get('875492019114487859')
     const exchangeChannel = client.channels.cache.get('876135096997007381')
 
-    formattedMsg = `From: @${command['user']}\n${command['text']}\nLink: `
+    formattedMsg = `From: @${command['user']}\n${command['text']}\nLink: ${command['link']}`
     type = command['type']
 
     if(type == 'news')
@@ -74,7 +74,7 @@ function messageHandler(command)
             ftxChannel.send(formattedMsg)
         else if(command['exchange'] == 'binance')
             binanceChannel.send(formattedMsg)
-        else 
+        else
             exchangeChannel.send(formattedMsg)
     }
     else if(type == 'whales'){

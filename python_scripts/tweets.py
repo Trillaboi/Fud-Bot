@@ -14,12 +14,16 @@ class Profile:
     gorillatrilla="797868177082515456"
     ftx="1101264495337365504"
     tier10k="2361601055"
+    BXRekt ="1038355836416929792"
 
-    follow_list = [binance, deItaone, whaletrades, gorillatrilla, tier10k]
 
     news_list = [deItaone, tier10k]
     exchange_list = [binance, ftx]
-    whale_list= [whaletrades]
+    whale_list = [whaletrades]
+    liquidation_list =[BXRekt]
+
+    follow_list = [gorillatrilla] + news_list + exchange_list + liquidation_list + whale_list
+
 
 consumer_key = "sbszez9LQyLT1esfLf0CWBFqk"
 consumer_secret = "JZfSyNwjMTLhZ0gpPe81Vn8dqapbdqymkCjvyDG8vjrLBznQhj"
@@ -29,6 +33,8 @@ access_token_secret ="yrsIDmB70FsvHx9NTA6IuSRdi8yB07Yq1EOVY8ixktusl"
 
 # An value of index 7 is used so oly append and if you delete make sure to adjust.
 tracking_list = ["btc", "xbt", "ETH", "crypto", "cryptocurrency", "ETHER", "ETHEREUM", "Will List", "bitcoin"]
+
+liquidation_list = ["long", "short", "liquidated", "liquidation"]
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -45,15 +51,15 @@ class MyStreamListener(tweepy.StreamListener):
         print("Error")
         print(status)
        # sys.out.flush()
-        
+
 #The v2 rules would omit having to parse the data yourself but its not available with tweepy yet.
 def parse_tweet(status):
     # The if statement below removes mentions and replies from data
-    if status.user.id_str in Profile.follow_list: 
+    if status.user.id_str in Profile.follow_list:
         res = any(ele.upper() in status.text.upper() for ele in tracking_list)  # check if keyword is contained in the list of text
         if res:
             if "retweeted_status" not in status._json and status.in_reply_to_status_id == None:
-                tweet_dict = {"user":status.user.screen_name, "text":status.text, "userId":status.user.id_str}
+                tweet_dict = {"user":status.user.screen_name, "text":status.text, "userId":status.user.id_str, "link":f"https://twitter.com/{status.user.screen_name}/status/{status.id_str}"}
                 if status.user.id_str in Profile.exchange_list:
                     exchange_listing(tweet_dict)
                 elif status.user.id_str in Profile.news_list:
@@ -67,7 +73,7 @@ def parse_tweet(status):
                     except:
                         print("failed!!")
                         print(status)
-        
+
 
 def exchange_listing(tweet_dict):
     tweet_dict['type'] = 'exchange'
