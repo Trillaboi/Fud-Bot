@@ -6,7 +6,7 @@ const tweepy = spawn('python3', ["-u", "python_scripts/tweets.py"], {stdio:['ipc
 const client = new Client();
 const messageEmitter = new EventEmitter();
 
-client.login('ODcwMzI1Mzg4MjQ3Njk5NDc4.YQLHrg.kKA6L_-sHKMRS3yNqgqMcFtIfZc')
+client.login('')
 
 
 
